@@ -7,20 +7,22 @@ use App\Interfaces\Auth\VerifyServiceInterface;
 use App\Interfaces\Categories\CategoryRepositoryInterface;
 use App\Interfaces\Categories\CategoryServiceInterface;
 use App\Interfaces\Mail\MailServiceInterface;
+use App\Interfaces\Movies\MovieRepositoryInterface;
+use App\Interfaces\Movies\MovieServiceInterface;
 use App\Interfaces\Translations\TranslateServiceInterface;
 use App\Repositories\Categories\CategoryRepository;
+use App\Repositories\Movies\MovieRepository;
 use App\Services\Auth\AuthService;
 use App\Services\Auth\VerifyService;
 use App\Services\Categories\CategoryService;
 use App\Services\Mail\MailService;
+use App\Services\Movies\MovieService;
 use App\Services\Translations\TranslateService;
 use Illuminate\Support\ServiceProvider;
 
 class InterfaceProvider extends ServiceProvider
 {
     /**
-     * Register services.
-     *
      * @return void
      */
     public function register()
@@ -30,11 +32,11 @@ class InterfaceProvider extends ServiceProvider
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(VerifyServiceInterface::class, VerifyService::class);
         $this->app->bind(MailServiceInterface::class, MailService::class);
+        $this->app->bind(MovieRepositoryInterface::class, MovieRepository::class);
+        $this->app->bind(MovieServiceInterface::class, MovieService::class);
     }
 
     /**
-     * Bootstrap services.
-     *
      * @return void
      */
     public function boot()

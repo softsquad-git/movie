@@ -229,5 +229,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    'basic_path' => 'assets/data/media/'
 ];
