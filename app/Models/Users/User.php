@@ -43,7 +43,7 @@ class User extends Authenticatable
     /**
      * @return string|null
      */
-    public function getFirstName(): ?string
+    public function getFullName(): ?string
     {
         return $this->name . ' ' . $this->last_name;
     }

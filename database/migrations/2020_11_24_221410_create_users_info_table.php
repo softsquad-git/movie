@@ -19,8 +19,8 @@ class CreateUsersInfoTable extends Migration
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->string('post_code')->nullable();
-            $table->string('address');
-            $table->string('contact_phone');
+            $table->string('address')->nullable();
+            $table->string('contact_phone')->nullable();
         });
     }
 

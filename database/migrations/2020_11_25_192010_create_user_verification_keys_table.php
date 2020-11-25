@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersRoleTable extends Migration
+class CreateUserVerificationKeysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateUsersRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_role', function (Blueprint $table) {
+        Schema::create('user_verification_keys', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('email')->index();
+            $table->string('verify_key', 64);
+            $table->ipAddress('ip_address');
+            $table->timestamps();
         });
-        \Illuminate\Support\Facades\Artisan::call('db:seed --class=DfRoleSeeder');
     }
 
     /**
@@ -27,6 +29,6 @@ class CreateUsersRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_role');
+        Schema::dropIfExists('user_verification_keys');
     }
 }

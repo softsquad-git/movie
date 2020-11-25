@@ -6,30 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserInformation extends Model
+class UserVerifyKey extends Model
 {
     use HasFactory;
 
     /**
      * @var string $table
      */
-    protected $table = 'users_info';
-
-    /**
-     * @var bool $timestamps
-     */
-    public $timestamps = false;
+    protected $table = 'user_verification_keys';
 
     /**
      * @var string[] $fillable
      */
     protected $fillable = [
-        'user_id',
-        'city',
-        'country',
-        'post_code',
-        'address',
-        'contact_phone'
+        'email',
+        'verify_key',
+        'ip_address'
     ];
 
     /**
@@ -37,6 +29,6 @@ class UserInformation extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'email', 'email');
     }
 }

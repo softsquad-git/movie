@@ -5,35 +5,38 @@ namespace App\Services\Categories;
 use App\Interfaces\Categories\CategoryServiceInterface;
 use App\Models\Categories\Category;
 use \Exception;
-use App\Interfaces\Translations\TranslateServiceInterface as TranslateService;
+use Illuminate\Support\Facades\DB;
 
 class CategoryService implements CategoryServiceInterface
 {
-    /**
-     * @var TranslateService $translateService
-     */
-    private $translateService;
 
     /**
-     * @param TranslateService $translateService
+     * @param array $data
+     * @param Category|null $category
+     * @return Category|null
+     * @throws Exception
      */
-    public function __construct(TranslateService $translateService)
-    {
-        $this->translateService = $translateService;
-    }
-
     public function save(array $data, Category $category = null): ?Category
     {
         if ($category) {
             $category->update($data);
+            #update trans
 
             return $category;
         }
 
-        $category = Category::create($data);
-        $this->translateService->create($data['translate'], $category);
-
-        return $category;
+        DB::beginTransaction();
+        try {
+            $category = Category::create($data);
+            foreach ($data['translate'] as $datum) {
+                $datum['category_id'] = $category->id;
+                $category->translate()->create($datum);
+            }
+            DB::commit();
+            return $category;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
