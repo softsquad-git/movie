@@ -23,7 +23,9 @@ class Category extends Model
     protected $fillable = [
         'parent_id',
         'is_active',
-        'image'
+        'image',
+        'name',
+        'alias'
     ];
 
     /**
@@ -40,16 +42,5 @@ class Category extends Model
     public function child(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function translate(): HasMany
-    {
-        return $this->hasMany(CategoryTranslate::class, 'category_id')
-            ->whereHas('lang', function ($q) {
-                $q->where('code', App::getLocale());
-            });
     }
 }

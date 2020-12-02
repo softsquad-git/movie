@@ -18,4 +18,10 @@ interface MovieServiceInterface
      * @return bool|null
      */
     public function remove(Movie $movie): ?bool;
+
+    /**
+     * @param Movie $movie
+     * @return bool|null
+     */
+    public function archive(Movie $movie): ?bool;
 }

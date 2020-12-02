@@ -1,42 +1,41 @@
 <?php
 
-namespace App\Models\Categories;
+namespace App\Models\Stories;
 
-use App\Models\Languages\Language;
+use App\Models\Categories\Category;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CategoryTranslate extends Model
+class Story extends Model
 {
     use HasFactory;
 
     /**
      * @var string $table
      */
-    protected $table = 'categories_translate';
-
-    /**
-     * @var bool $timestamps
-     */
-    public $timestamps = false;
+    protected $table = 'stories';
 
     /**
      * @var string[] $fillable
      */
     protected $fillable = [
-        'lang_id',
+        'user_id',
+        'title',
         'category_id',
-        'name',
-        'alias'
+        'content',
+        'status',
+        'is_comment',
+        'is_rating'
     ];
 
     /**
      * @return BelongsTo
      */
-    public function lang(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(User::class);
     }
 
     /**

@@ -20,7 +20,6 @@ class CategoryService implements CategoryServiceInterface
     {
         if ($category) {
             $category->update($data);
-            #update trans
 
             return $category;
         }
@@ -28,10 +27,6 @@ class CategoryService implements CategoryServiceInterface
         DB::beginTransaction();
         try {
             $category = Category::create($data);
-            foreach ($data['translate'] as $datum) {
-                $datum['category_id'] = $category->id;
-                $category->translate()->create($datum);
-            }
             DB::commit();
             return $category;
         } catch (Exception $e) {

@@ -99,18 +99,41 @@ class MovieController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param Request $request
      * @return JsonResponse
      */
-    public function remove(int $id): JsonResponse
+    public function remove(Request $request): JsonResponse
     {
         try {
-            $item = $this->movieRepository->find($id);
-            $this->movieService->remove($item);
+            $ids = $request->query->get('ids');
+            foreach (json_decode($ids) as $id) {
+                $item = $this->movieRepository->find($id);
+                $this->movieService->remove($item);
+            }
 
             return $this->jsonSuccessResponse(trans('messages.success.removed'));
         } catch (Exception $e) {
             return $this->jsonErrorResponse($e, trans('messages.error.removed'));
         }
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function archive(Request $request): JsonResponse
+    {
+        try {
+            $ids = $request->query->get('ids');
+            foreach (json_decode($ids) as $id) {
+                $item = $this->movieRepository->find($id);
+                $this->movieService->archive($item);
+            }
+
+            return $this->jsonSuccessResponse(trans('messages.success.archive'));
+        } catch (Exception $e) {
+            return $this->jsonErrorResponse($e, trans('messages.error.archive'));
+        }
+    }
+
 }

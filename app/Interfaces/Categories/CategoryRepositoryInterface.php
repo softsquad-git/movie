@@ -11,11 +11,11 @@ interface CategoryRepositoryInterface
 
     /**
      * @param array $filters
-     * @param string $ordering
-     * @param int $pagination
+     * @param string|null $ordering
+     * @param int|null $pagination
      * @return mixed
      */
-    public function findBy(array $filters, string $ordering = 'DESC', int $pagination = 20);
+    public function findBy(array $filters, ?string $ordering = 'DESC', ?int $pagination = 20);
 
     /**
      * @param int $id

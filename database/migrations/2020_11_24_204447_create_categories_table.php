@@ -18,6 +18,8 @@ class CreateCategoriesTable extends Migration
             $table->integer('parent_id')->default(0)->index();
             $table->boolean('is_active');
             $table->string('image')->nullable();
+            $table->string('name');
+            $table->string('alias')->unique();
             $table->timestamps();
         });
     }

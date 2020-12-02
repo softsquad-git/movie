@@ -24,4 +24,7 @@ Route::group([
     ], function () {
         include 'api/front.api.php';
     });
+    Route::group(['prefix' => 'categories', 'namespace' => 'Categories'], function () {
+       Route::get('all', 'CategoryController@index');
+    });
 });

@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Models\Users;
+use App\Models\Albums\Album;
+use App\Models\Movies\Movie;
+use App\Models\Stories\Story;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -70,5 +74,29 @@ class User extends Authenticatable
     public function info(): HasOne
     {
         return $this->hasOne(UserInformation::class, 'user_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function albums(): HasMany
+    {
+        return $this->hasMany(Album::class, 'user_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function movies(): HasMany
+    {
+        return $this->hasMany(Movie::class, 'user_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function stories(): HasMany
+    {
+        return $this->hasMany(Story::class, 'user_id');
     }
 }

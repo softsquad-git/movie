@@ -70,6 +70,13 @@ return [
             'root' => storage_path('app/movies'),
             'url' => env('APP_URL').'/media/movies',
             'visibility' => 'public'
+        ],
+
+        'photos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/photos'),
+            'url' => env('APP_URL').'/media/photos',
+            'visibility' => 'public'
         ]
 
     ],
@@ -87,7 +94,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('storage') => storage_path('app/movies'),
+        public_path('movies') => storage_path('app/movies'),
+        public_path('photos') => storage_path('app/photos'),
     ],
 
 ];

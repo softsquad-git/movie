@@ -6,6 +6,7 @@ use App\Interfaces\Movies\MovieRepositoryInterface;
 use App\Models\Movies\Movie;
 use \Illuminate\Database\Eloquent\Collection;
 use \Exception;
+use Illuminate\Support\Facades\Auth;
 
 class MovieRepository implements MovieRepositoryInterface
 {
@@ -14,7 +15,7 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function findAll()
     {
-        return Movie::all();
+        return Auth::user()->movies()->get();
     }
 
     /**
@@ -25,7 +26,7 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function findBy(array $filters, $ordering = 'DESC', $pagination = 20)
     {
-        $data = Movie::orderBy('id', $filters['ordering'] ?? $ordering)
+        $data = Auth::user()->movies()->orderBy('id', $filters['ordering'] ?? $ordering)
             ->where($filters);
         if (isset($filters['title'])) {
             $data->andWhere('title', 'like', '%' . $filters['title'] . '%');
@@ -39,7 +40,7 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function findOnBy(array $filters): ?Movie
     {
-        return Movie::where($filters)
+        return Auth::user()->movies()->where($filters)
             ->first();
     }
 

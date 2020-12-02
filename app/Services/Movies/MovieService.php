@@ -2,6 +2,7 @@
 
 namespace App\Services\Movies;
 
+use App\Helpers\Status;
 use App\Interfaces\Movies\MovieServiceInterface;
 use App\Models\Movies\Movie;
 use \Exception;
@@ -69,16 +70,6 @@ class MovieService implements MovieServiceInterface
     }
 
     /**
-     * @param Movie $movie
-     * @return bool|null
-     * @throws Exception
-     */
-    public function remove(Movie $movie): ?bool
-    {
-        return $movie->delete();
-    }
-
-    /**
      * @param $file
      * @return string
      * @throws Exception
@@ -93,5 +84,34 @@ class MovieService implements MovieServiceInterface
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+    /**
+     * @param Movie $movie
+     * @return bool|null
+     * @throws Exception
+     */
+    public function remove(Movie $movie): ?bool
+    {
+        return $movie->delete();
+    }
+
+    /**
+     * @param Movie $movie
+     * @return bool|null
+     */
+    public function archive(Movie $movie): ?bool
+    {
+        if ($movie->status == Status::ON) {
+            $movie->update(['status' => Status::OFF]);
+            return true;
+        }
+
+        if ($movie->status == Status::OFF) {
+            $movie->update(['status' => Status::ON]);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -50,7 +50,8 @@ class AuthService implements AuthServiceInterface
                 return [
                     'access_token' => $user->createToken(config('app.name'))->accessToken,
                     'user_id' => $user->id,
-                    'name' => $user->getFullName()
+                    'name' => $user->getFullName(),
+                    'is_verified' => $user->is_verified
                 ];
             }
 
