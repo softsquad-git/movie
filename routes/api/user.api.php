@@ -14,6 +14,8 @@ Route::group([
     Route::get('find/{id}', 'MovieController@find');
 });
 
+Route::get('logged', 'UserController@logged');
+
 Route::group([
     'prefix' => 'stories',
     'namespace' => 'Stories'
@@ -43,4 +45,13 @@ Route::group([
         Route::post('create', 'PhotoController@create');
         Route::delete('remove', 'PhotoController@remove');
     });
+});
+
+Route::group([
+    'prefix' => 'settings',
+    'namespace' => 'Settings'
+], function () {
+   Route::post('basic-data', 'SettingController@changeBasicData');
+   Route::post('change-password', 'SettingController@changePassword');
+   Route::post('change-avatar', 'SettingController@changeAvatar');
 });

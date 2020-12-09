@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Stories\StoryRequest;
 use App\Http\Resources\Stories\StoriesResource;
 use App\Http\Resources\Stories\StoryResource;
+use Illuminate\Support\Facades\Auth;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Http\Request;
 use App\Interfaces\Stories\StoryRepositoryInterface as StoryRepository;
@@ -43,6 +44,7 @@ class StoryController extends Controller
     {
         try {
             $filters = $request->all();
+            $filters['user'] = Auth::id();
             $data = $this->storyRepository->findBy($filters);
 
             return StoriesResource::collection($data);

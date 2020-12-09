@@ -7,24 +7,36 @@ use Illuminate\Foundation\Http\FormRequest;
 class AlbumRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|min:3',
+            'is_private' => 'required',
+            'is_visibility' => 'required'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => trans('validation.required', ['var' => trans('validation.fields.name')]),
+            'name.string' => trans('validation.string', ['var' => trans('validation.fields.name')]),
+            'name.min' => trans('validation.min', ['var' => trans('validation.fields.name'), 'val' => 3]),
+            'is_private.required' => trans('validation.required', ['var' => trans('validation.fields.is_private')]),
+            'is_visibility.required' => trans('validation.required', ['var' => trans('validation.fields.is_visibility')])
         ];
     }
 }

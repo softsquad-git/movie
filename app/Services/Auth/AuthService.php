@@ -51,7 +51,8 @@ class AuthService implements AuthServiceInterface
                     'access_token' => $user->createToken(config('app.name'))->accessToken,
                     'user_id' => $user->id,
                     'name' => $user->getFullName(),
-                    'is_verified' => $user->is_verified
+                    'is_verified' => $user->is_verified,
+                    'avatar' => asset('avatars/'.$user->avatar->src)
                 ];
             }
 

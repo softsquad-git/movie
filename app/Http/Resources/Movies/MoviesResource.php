@@ -12,7 +12,7 @@ class MoviesResource extends JsonResource
      * @param Request $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
@@ -21,7 +21,7 @@ class MoviesResource extends JsonResource
                 'id' => $this->category_id,
                 'name' => $this->category->name
             ],
-            'src' => '',
+            'thumb' => asset('movies/thumbs/'.$this->thumb),
             'status' => [
                 'code' => $this->status,
                 'name' => Status::getNameStatus($this->status)

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Interfaces\Albums\AlbumRepositoryInterface as AlbumRepository;
 use App\Interfaces\Albums\AlbumServiceInterface as AlbumService;
 use \Exception;
+use Illuminate\Support\Facades\Auth;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use \Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -41,8 +42,9 @@ class AlbumController extends Controller
      */
     public function index(Request $request)
     {
-        $filters = $request->all();
         try {
+            $filters = $request->all();
+            $filters['user'] = Auth::id();
             $data = $this->albumRepository->findBy($filters);
 
             return AlbumsResource::collection($data);

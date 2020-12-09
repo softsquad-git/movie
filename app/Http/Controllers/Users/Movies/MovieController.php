@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Interfaces\Movies\MovieRepositoryInterface as MovieRepository;
 use App\Interfaces\Movies\MovieServiceInterface as MovieService;
 use \Exception;
+use Illuminate\Support\Facades\Auth;
 use \Symfony\Component\HttpFoundation\JsonResponse;
 use \Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -43,6 +44,7 @@ class MovieController extends Controller
     {
         try {
             $filters = $request->all();
+            $filters['user'] = Auth::id();
             $data = $this->movieRepository->findBy($filters);
 
             return MoviesResource::collection($data);

@@ -77,6 +77,20 @@ return [
             'root' => storage_path('app/photos'),
             'url' => env('APP_URL').'/media/photos',
             'visibility' => 'public'
+        ],
+
+        'avatars' => [
+            'driver' => 'local',
+            'root' => storage_path('app/avatars'),
+            'url' => env('APP_URL').'/media/avatars',
+            'visibility' => 'public'
+        ],
+
+        'movies_thumbs' => [
+            'driver' => 'local',
+            'root' => storage_path('app/movies/thumbs'),
+            'url' => env('APP_URL').'/media/movies/thumbs',
+            'visibility' => 'public'
         ]
 
     ],
@@ -96,6 +110,8 @@ return [
         public_path('storage') => storage_path('app/public'),
         public_path('movies') => storage_path('app/movies'),
         public_path('photos') => storage_path('app/photos'),
+        public_path('avatars') => storage_path('app/avatars'),
+        public_path('movies_thumb') => storage_path('app/movies/thumbs'),
     ],
 
 ];

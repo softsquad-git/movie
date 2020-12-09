@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Movies;
 
+use App\Helpers\Status;
 use App\Interfaces\Movies\MovieRepositoryInterface;
 use App\Models\Movies\Movie;
 use \Illuminate\Database\Eloquent\Collection;
@@ -15,7 +16,7 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function findAll()
     {
-        return Auth::user()->movies()->get();
+        return Movie::all();
     }
 
     /**
@@ -26,11 +27,23 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function findBy(array $filters, $ordering = 'DESC', $pagination = 20)
     {
-        $data = Auth::user()->movies()->orderBy('id', $filters['ordering'] ?? $ordering)
-            ->where($filters);
-        if (isset($filters['title'])) {
-            $data->andWhere('title', 'like', '%' . $filters['title'] . '%');
+        $data = Movie::orderBy('id', $filters['ordering'] ?? $ordering);
+        if (isset($filters['title']) && !empty($title = $filters['title'])) {
+            $data->where('title', 'like', '%' . $title . '%');
         }
+        if (isset($filters['category']) && !empty($category = $filters['category'])) {
+            $data->where('category_id', $category);
+        }
+        if (isset($filters['status']) && !empty($status = $filters['status'])) {
+            $data->where('status', $status);
+        }
+        if (isset($filters['user']) && !empty($user = $filters['user'])) {
+            $data->where('user_id', $user);
+        }
+        if (isset($filters['except']) && !empty($except = $filters['except'])) {
+            $data->whereIn('id', '!=', json_decode($except));
+        }
+
         return $data->paginate($filters['pagination'] ?? $pagination);
     }
 
@@ -40,7 +53,7 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function findOnBy(array $filters): ?Movie
     {
-        return Auth::user()->movies()->where($filters)
+        return Movie::where($filters)
             ->first();
     }
 

@@ -9,8 +9,10 @@ use \Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Interfaces\Categories\CategoryRepositoryInterface as CategoryRepository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class MovieService implements MovieServiceInterface
 {
@@ -49,8 +51,10 @@ class MovieService implements MovieServiceInterface
         $this->categoryRepository->find($data['category_id']);
 
         if ($movie) {
-            if (isset($data['file']) && !empty($data['file']))
+            if (isset($data['file']) && !empty($data['file'])) {
                 $data['src'] = $this->uploadFile($data['file']);
+                $data['thumb'] = $this->saveThumbnails($data['src']);
+            }
             $movie->update($data);
 
             return $movie;
@@ -59,6 +63,7 @@ class MovieService implements MovieServiceInterface
         DB::beginTransaction();
         try {
             $data['src'] = $this->uploadFile($data['file']);
+            $data['thumb'] = $this->saveThumbnails($data['src']);
             $item = Movie::create($data);
 
             DB::commit();
@@ -78,7 +83,29 @@ class MovieService implements MovieServiceInterface
     {
         $fileName = Str::random(64).'.'.$file->getClientOriginalExtension();
         try {
-            $file->store($fileName, ['disk' => 'movies']);
+            Storage::disk('movies')->put($fileName, File::get($file));
+
+            return $fileName;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $path
+     * @return string|null
+     * @throws Exception
+     */
+    private function saveThumbnails(string $path): ?string
+    {
+        $fileName = Str::random(32).'.png';
+        try {
+            FFMpeg::fromDisk('movies')
+                ->open($path)
+                ->getFrameFromSeconds(10)
+                ->export()
+                ->toDisk('movies_thumbs')
+                ->save($fileName);
 
             return $fileName;
         } catch (Exception $e) {

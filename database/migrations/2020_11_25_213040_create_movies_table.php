@@ -20,6 +20,7 @@ class CreateMoviesTable extends Migration
             $table->integer('user_id')->index();
             $table->integer('category_id')->index();
             $table->string('src');
+            $table->string('thumb')->nullable();
             $table->integer('status')->default(\App\Helpers\Status::WAITING);
             $table->boolean('is_comment')->default(true);
             $table->boolean('is_rating')->default(true);

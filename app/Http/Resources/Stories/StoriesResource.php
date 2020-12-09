@@ -17,6 +17,7 @@ class StoriesResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'short_content' => substr($this->content, 0, 300),
             'category' => [
                 'id' => $this->category_id,
                 'name' => $this->category->name

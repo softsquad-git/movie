@@ -15,15 +15,26 @@ class StoryRepository implements StoryRepositoryInterface
      */
     public function findAll()
     {
-        return Auth::user()->stories()->get();
+        return Story::all();
     }
 
+    /**
+     * @param array $filters
+     * @param string $ordering
+     * @param int $pagination
+     * @return mixed
+     */
     public function findBy(array $filters, string $ordering = 'DESC', int $pagination = 20)
     {
-        $data = Auth::user()->stories()->orderBy('id', $filters['ordering'] ?? $ordering)
-            ->where($filters);
-        if (isset($filters['title'])) {
-            $data->andWhere('title', 'like', '%' . $filters['title'] . '%');
+        $data = Story::orderBy('id', $filters['ordering'] ?? $ordering);
+        if (isset($filters['title']) && !empty($title = $filters['title'])) {
+            $data->where('title', 'like', '%' . $title . '%');
+        }
+        if (isset($filters['status']) && !empty($status = $filters['status'])) {
+            $data->where('status', $status);
+        }
+        if (isset($filters['user']) && !empty($user = $filters['user'])) {
+            $data->where('user_id', $user);
         }
 
         return $data->paginate($filters['pagination'] ?? $pagination);
@@ -35,8 +46,7 @@ class StoryRepository implements StoryRepositoryInterface
      */
     public function findOneBy(array $filters): ?Story
     {
-        return Auth::user()->stories()->where($filters)
-            ->first();
+        return Story::where($filters)->first();
     }
 
     /**

@@ -11,6 +11,11 @@ use \Exception;
 class StoryService implements StoryServiceInterface
 {
     /**
+     * @var string
+     */
+    const RESOURCE_TYPE = 'STORY';
+
+    /**
      * @param array $data
      * @param Story|null $story
      * @return Story|null

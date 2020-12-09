@@ -23,8 +23,32 @@ Route::group([
         'namespace' => 'Front'
     ], function () {
         include 'api/front.api.php';
+        Route::group([
+            'prefix' => 'profile',
+            'namespace' => 'Profiles'
+        ], function (){
+            include 'api/profile.api.php';
+        });
     });
     Route::group(['prefix' => 'categories', 'namespace' => 'Categories'], function () {
-       Route::get('all', 'CategoryController@index');
+        Route::get('all', 'CategoryController@index');
+    });
+    Route::group([
+        'prefix' => 'comments',
+        'namespace' => 'Comments'
+    ], function () {
+        include 'api/comments.api.php';
+    });
+    Route::group([
+        'prefix' => 'ratings',
+        'namespace' => 'Ratings'
+    ], function () {
+       include 'api/ratings.api.php';
+    });
+    Route::group([
+        'prefix' => 'likes',
+        'namespace' => 'Likes'
+    ], function () {
+        include 'api/likes.api.php';
     });
 });
